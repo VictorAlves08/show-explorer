@@ -44,11 +44,7 @@ export default function FavoritesScreen() {
   return (
     <Screen>
       <SafeAreaView edges={['top']} className="border-b border-border bg-background">
-        <View className="px-md pb-md pt-sm">
-          <View className="mb-sm flex-row justify-end">
-            <FavoritesBadge />
-          </View>
-
+        <View className="px-md pb-md pt-sm mt-lg">
           <ShowFilters
             minimumRating={minimumRating}
             onMinimumRatingChange={setMinimumRating}

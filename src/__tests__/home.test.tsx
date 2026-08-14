@@ -166,7 +166,7 @@ describe('HomeScreen', () => {
   it('renders browse results', async () => {
     await render(<HomeScreen />);
 
-    expect(screen.getByText('Show Explorer')).toBeTruthy();
+    expect(screen.getByText('Show Explorer App')).toBeTruthy();
     expect(screen.getByText('To Be Determined')).toBeTruthy();
     expect(screen.queryByText('TBD')).toBeNull();
     expect(screen.queryByText('TDB')).toBeNull();
@@ -214,6 +214,28 @@ describe('HomeScreen', () => {
     await fireEvent.press(screen.getByLabelText('Rating 9 or higher'));
 
     expect(screen.getByText('No shows match these filters')).toBeTruthy();
+  });
+
+  it('hides pagination loading skeletons when filters remove all visible shows', async () => {
+    mockUseShows.mockReturnValue(createBrowseQuery({ isFetchingNextPage: true }));
+
+    await render(<HomeScreen />);
+
+    await fireEvent.press(screen.getByLabelText('Status To Be Determined'));
+    await fireEvent.press(screen.getByLabelText('Rating 9 or higher'));
+
+    expect(screen.getByText('No shows match these filters')).toBeTruthy();
+    expect(screen.queryByLabelText('Loading show')).toBeNull();
+  });
+
+  it('shows pagination loading skeletons when visible shows exist', async () => {
+    mockUseShows.mockReturnValue(createBrowseQuery({ isFetchingNextPage: true }));
+
+    await render(<HomeScreen />);
+
+    expect(screen.getByText('Running Show')).toBeTruthy();
+    expect(screen.getByText('Ended Show')).toBeTruthy();
+    expect(screen.getAllByLabelText('Loading show')).toHaveLength(2);
   });
 
   it('retries initial browse errors', async () => {

@@ -51,6 +51,7 @@ export default function HomeScreen() {
     () => filterShows(availableShows, { status, minimumRating }),
     [availableShows, minimumRating, status],
   );
+  const hasVisibleShows = visibleShows.length > 0;
 
   const isInitialBrowseLoading =
     mode === 'browse' && browseQuery.isPending && browsedShows.length === 0;
@@ -83,9 +84,12 @@ export default function HomeScreen() {
     <Screen>
       <SafeAreaView edges={['top']} className="border-b border-border bg-background">
         <View className="px-md pb-md pt-sm">
-          <View className="mb-md items-center">
+          <View className="mt-lg mb-md items-center">
             <Text variant="heading" className="text-center">
-              Show Explorer
+              Show Explorer App
+            </Text>
+            <Text variant="body" className="text-center">
+              Browse and search your favorite shows
             </Text>
           </View>
 
@@ -130,8 +134,10 @@ export default function HomeScreen() {
           }
           ListFooterComponent={
             <HomeListFooter
-              isFetchingNextPage={mode === 'browse' && browseQuery.isFetchingNextPage}
-              paginationFailed={mode === 'browse' && browseQuery.isError && browsedShows.length > 0}
+              isFetchingNextPage={
+                mode === 'browse' && browseQuery.isFetchingNextPage && hasVisibleShows
+              }
+              paginationFailed={mode === 'browse' && browseQuery.isError && hasVisibleShows}
               onRetryPagination={() => {
                 void browseQuery.fetchNextPage();
               }}
