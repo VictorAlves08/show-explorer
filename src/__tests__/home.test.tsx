@@ -7,7 +7,7 @@ import type { ShowListItem } from '@/features/shows/domain/show';
 import { useSearchShows } from '@/features/shows/queries/useSearchShows';
 import { useShows } from '@/features/shows/queries/useShows';
 
-import HomeScreen from './index';
+import HomeScreen from '../app/index';
 
 const mockFetchNextPage = jest.fn();
 const mockBrowseRefetch = jest.fn();
