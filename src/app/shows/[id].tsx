@@ -40,7 +40,7 @@ export default function ShowDetailScreen() {
   if (showId === null) {
     return (
       <Screen padded className="justify-center">
-        <Stack.Screen options={{ title: 'Show Detail' }} />
+        <Stack.Screen options={{ title: 'Show Details' }} />
         <ErrorState description="This show link is not valid." title="Show not found" />
       </Screen>
     );
@@ -65,7 +65,7 @@ function ValidShowDetailScreen({ showId }: ValidShowDetailScreenProps) {
   if (showQuery.isPending && show === undefined) {
     return (
       <Screen>
-        <Stack.Screen options={{ title: 'Show Detail' }} />
+        <Stack.Screen options={{ title: 'Show Details' }} />
         <ScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingVertical: 24 }}>
           <ShowDetailSkeleton />
         </ScrollView>
@@ -76,7 +76,7 @@ function ValidShowDetailScreen({ showId }: ValidShowDetailScreenProps) {
   if (showQuery.isError && show === undefined) {
     return (
       <Screen padded className="justify-center">
-        <Stack.Screen options={{ title: 'Show Detail' }} />
+        <Stack.Screen options={{ title: 'Show Details' }} />
         <ErrorState
           description="We could not load this show. Please try again."
           onRetry={retryShow}
@@ -89,7 +89,7 @@ function ValidShowDetailScreen({ showId }: ValidShowDetailScreenProps) {
   if (show === undefined) {
     return (
       <Screen padded className="justify-center">
-        <Stack.Screen options={{ title: 'Show Detail' }} />
+        <Stack.Screen options={{ title: 'Show Details' }} />
         <ErrorState
           description="This show is unavailable right now."
           onRetry={retryShow}

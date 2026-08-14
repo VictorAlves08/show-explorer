@@ -1,5 +1,5 @@
-import { Text } from '@/components/ui/Text';
 import { IconButton } from '@/components/ui/IconButton';
+import { Text } from '@/components/ui/Text';
 import type { ShowListItem } from '@/features/shows/domain/show';
 
 import { toFavoriteShow } from '../domain/favorite';
@@ -30,10 +30,10 @@ export function FavoriteButton({ show }: FavoriteButtonProps) {
       size="sm"
     >
       <Text
-        variant="title"
-        className={selected ? 'text-favorite' : 'text-foreground-muted'}
         accessibilityElementsHidden
+        className={selected ? 'text-favorite' : 'text-foreground-muted'}
         importantForAccessibility="no-hide-descendants"
+        variant="title"
       >
         {selected ? '♥' : '♡'}
       </Text>

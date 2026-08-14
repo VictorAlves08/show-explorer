@@ -20,11 +20,12 @@ export function SeasonAccordion({ season, defaultExpanded = false }: SeasonAccor
   const [expanded, setExpanded] = useState(defaultExpanded);
   const episodeCount = formatEpisodeCount(season.episodes.length);
   const seasonLabel = `Season ${season.number}`;
+  const expandedLabel = expanded ? 'expanded' : 'collapsed';
 
   return (
     <View className="rounded-md border border-border bg-surface px-md">
       <Pressable
-        accessibilityLabel={`${seasonLabel}, ${episodeCount}`}
+        accessibilityLabel={`${seasonLabel}, ${episodeCount}, ${expandedLabel}`}
         accessibilityRole="button"
         accessibilityState={{ expanded }}
         className="min-h-12 flex-row items-center justify-between gap-md py-sm"

@@ -36,7 +36,9 @@ describe('SeasonAccordion', () => {
     expect(screen.getByText('Season 2')).toBeTruthy();
     expect(screen.getByText('2 episodes')).toBeTruthy();
     expect(screen.queryByText('The First One')).toBeNull();
-    expect(screen.getByLabelText('Season 2, 2 episodes').props.accessibilityState).toEqual({
+    expect(
+      screen.getByLabelText('Season 2, 2 episodes, collapsed').props.accessibilityState,
+    ).toEqual({
       expanded: false,
     });
   });
@@ -46,7 +48,9 @@ describe('SeasonAccordion', () => {
 
     expect(screen.getByText('The First One')).toBeTruthy();
     expect(screen.getByText('S02E01 / 2020-01-01 / 42 min')).toBeTruthy();
-    expect(screen.getByLabelText('Season 2, 2 episodes').props.accessibilityState).toEqual({
+    expect(
+      screen.getByLabelText('Season 2, 2 episodes, expanded').props.accessibilityState,
+    ).toEqual({
       expanded: true,
     });
   });
@@ -57,14 +61,18 @@ describe('SeasonAccordion', () => {
     fireEvent.press(screen.getByText('Season 2'));
 
     await waitFor(() => expect(screen.getByText('The Second One')).toBeTruthy());
-    expect(screen.getByLabelText('Season 2, 2 episodes').props.accessibilityState).toEqual({
+    expect(
+      screen.getByLabelText('Season 2, 2 episodes, expanded').props.accessibilityState,
+    ).toEqual({
       expanded: true,
     });
 
     fireEvent.press(screen.getByText('Season 2'));
 
     await waitFor(() => expect(screen.queryByText('The Second One')).toBeNull());
-    expect(screen.getByLabelText('Season 2, 2 episodes').props.accessibilityState).toEqual({
+    expect(
+      screen.getByLabelText('Season 2, 2 episodes, collapsed').props.accessibilityState,
+    ).toEqual({
       expanded: false,
     });
   });
