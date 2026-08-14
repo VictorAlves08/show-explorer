@@ -15,6 +15,15 @@ Show Explorer is a React Native/Expo application for discovering TV shows with t
 - Local Favorites search and filtering.
 - Intentional loading, skeleton, error, and empty states.
 
+## Screenshots
+
+| Home Screen                                                        | Favorites Screen                               | Show Details                               |
+| ------------------------------------------------------------------ | ---------------------------------------------- | ------------------------------------------ |
+| ![Home](assets/screenshots/home.jpg)                               | ![Favorites](assets/screenshots/favorites.jpg) | ![Details](assets/screenshots/details.jpg) |
+| Browse and search shows with status and rating filters             | Manage your saved favorite shows               | View show details, summary, and episodes   |
+| ![Home with Favorites](assets/screenshots/home_with_favorites.jpg) |                                                |                                            |
+| Home screen showing favorites badge count                          |                                                |                                            |
+
 ## Tech Stack
 
 - Expo / React Native: mobile app runtime and development workflow.
