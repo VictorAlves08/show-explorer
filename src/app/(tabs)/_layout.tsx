@@ -1,11 +1,14 @@
+import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
-import { Text } from 'react-native';
 
 import { useFavorites } from '@/features/favorites/hooks/useFavorites';
+import { useOptionalSafeAreaInsets } from '@/hooks/useOptionalSafeAreaInsets';
 
 export default function TabsLayout() {
   const { favorites, isHydrated } = useFavorites();
+  const insets = useOptionalSafeAreaInsets();
   const favoritesCount = favorites.length;
+  const tabBarBottomPadding = Math.max(insets.bottom, 12);
 
   return (
     <Tabs
@@ -17,6 +20,9 @@ export default function TabsLayout() {
         tabBarStyle: {
           backgroundColor: '#ffffff',
           borderTopColor: '#e2e8f0',
+          height: 64 + tabBarBottomPadding,
+          paddingBottom: tabBarBottomPadding,
+          paddingTop: 8,
         },
       }}
     >
@@ -24,14 +30,14 @@ export default function TabsLayout() {
         name="index"
         options={{
           tabBarAccessibilityLabel: 'Home tab',
-          tabBarIcon: ({ color }) => (
-            <Text
+          tabBarIcon: ({ color, focused, size }) => (
+            <Ionicons
               accessibilityElementsHidden
+              color={color}
               importantForAccessibility="no-hide-descendants"
-              style={{ color, fontSize: 20 }}
-            >
-              {'⌂'}
-            </Text>
+              name={focused ? 'home' : 'home-outline'}
+              size={size}
+            />
           ),
           tabBarLabel: 'Home',
           title: 'Home',
@@ -45,14 +51,14 @@ export default function TabsLayout() {
               ? `Favorites tab, ${favoritesCount} saved`
               : 'Favorites tab',
           tabBarBadge: isHydrated && favoritesCount > 0 ? favoritesCount : undefined,
-          tabBarIcon: ({ color }) => (
-            <Text
+          tabBarIcon: ({ color, focused, size }) => (
+            <Ionicons
               accessibilityElementsHidden
+              color={color}
               importantForAccessibility="no-hide-descendants"
-              style={{ color, fontSize: 20 }}
-            >
-              {'♡'}
-            </Text>
+              name={focused ? 'heart' : 'heart-outline'}
+              size={size}
+            />
           ),
           tabBarLabel: 'Favorites',
           title: 'Favorites',

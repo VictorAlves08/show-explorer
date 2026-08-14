@@ -1,10 +1,10 @@
 import { useMemo, useState } from 'react';
 import { router } from 'expo-router';
 import { View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Screen } from '@/components/ui/Screen';
-import { Text } from '@/components/ui/Text';
 import { FavoriteButton } from '@/features/favorites/components/FavoriteButton';
 import { FavoritesBadge } from '@/features/favorites/components/FavoritesBadge';
 import { useFavorites } from '@/features/favorites/hooks/useFavorites';
@@ -15,8 +15,14 @@ import { ShowListSkeleton } from '@/features/shows/components/ShowListSkeleton';
 import type { ShowListItem } from '@/features/shows/domain/show';
 import type { MinimumRating, StatusFilter } from '@/features/shows/domain/showFilters';
 import { filterShows } from '@/features/shows/utils/filterShows';
+import { useOptionalSafeAreaInsets } from '@/hooks/useOptionalSafeAreaInsets';
+
+const LIST_HORIZONTAL_PADDING = 16;
+const LIST_TOP_PADDING = 16;
+const LIST_BOTTOM_PADDING = 32;
 
 export default function FavoritesScreen() {
+  const insets = useOptionalSafeAreaInsets();
   const { favorites, isHydrated } = useFavorites();
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState<StatusFilter>('all');
@@ -37,24 +43,22 @@ export default function FavoritesScreen() {
 
   return (
     <Screen>
-      <View className="border-b border-border bg-background px-md pb-md pt-lg">
-        <View className="mb-md flex-row items-start justify-between gap-md">
-          <View className="min-w-0 flex-1 gap-xs">
-            <Text variant="heading">Favorites</Text>
-            <Text variant="muted">Your saved shows, searchable offline.</Text>
+      <SafeAreaView edges={['top']} className="border-b border-border bg-background">
+        <View className="px-md pb-md pt-sm">
+          <View className="mb-sm flex-row justify-end">
+            <FavoritesBadge />
           </View>
-          <FavoritesBadge />
-        </View>
 
-        <ShowFilters
-          minimumRating={minimumRating}
-          onMinimumRatingChange={setMinimumRating}
-          onSearchChange={setSearch}
-          onStatusChange={setStatus}
-          search={search}
-          status={status}
-        />
-      </View>
+          <ShowFilters
+            minimumRating={minimumRating}
+            onMinimumRatingChange={setMinimumRating}
+            onSearchChange={setSearch}
+            onStatusChange={setStatus}
+            search={search}
+            status={status}
+          />
+        </View>
+      </SafeAreaView>
 
       {!isHydrated ? (
         <View className="flex-1 px-md py-md">
@@ -76,7 +80,11 @@ export default function FavoritesScreen() {
               />
             )
           }
-          contentContainerStyle={{ padding: 16, paddingBottom: 32 }}
+          contentContainerStyle={{
+            paddingBottom: LIST_BOTTOM_PADDING + insets.bottom,
+            paddingHorizontal: LIST_HORIZONTAL_PADDING,
+            paddingTop: LIST_TOP_PADDING,
+          }}
           onShowPress={handleShowPress}
           renderShowAction={(show) => <FavoriteButton show={show} />}
         />

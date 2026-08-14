@@ -1,0 +1,789 @@
+# UX Refinement — Home, Favorites, Icons and Show Detail
+
+## Objective
+
+Perform a focused UX/UI refinement pass on the existing Show Explorer application.
+
+The application is already functional.
+
+Do not redesign architecture, state management, API behavior or business logic.
+
+The goal is to improve:
+
+- Home visual hierarchy;
+- safe-area/header behavior;
+- filter clarity;
+- icon consistency;
+- Favorites visual cleanliness;
+- Show Detail vertical proportions;
+- season accordion interaction quality.
+
+Preserve all existing functionality and tests.
+
+---
+
+# 1. Required Context
+
+Before modifying code, read:
+
+1. `AGENTS.md`
+2. relevant sections of `docs/SPEC.md`
+3. relevant sections of `docs/ARCHITECTURE.md`
+4. relevant sections of `docs/DECISIONS.md`
+5. `src/features/shows/SKILL.md`
+6. `src/features/favorites/SKILL.md`
+
+Then inspect the current implementation before changing components.
+
+Do not assume component structure from this prompt.
+
+Reuse and refine existing components wherever possible.
+
+---
+
+# 2. Scope Discipline
+
+This is a UX refinement task.
+
+Do not change:
+
+- TVMaze API integration;
+- TanStack Query architecture;
+- Favorites persistence architecture;
+- DTO/domain models unless required for presentation only;
+- search behavior;
+- filtering semantics;
+- navigation routes;
+- state ownership;
+- tests unrelated to modified behavior.
+
+Do not perform unrelated refactors.
+
+---
+
+# 3. Home Header — Safe Area
+
+The current Home header visually overlaps or sits too close to the device notification/status area.
+
+Fix the layout so the Home content correctly respects the top safe area.
+
+The final layout must not overlap:
+
+- status bar;
+- notification area;
+- device cutout/notch.
+
+Use the existing Expo/React Native safe-area setup.
+
+Do not introduce another safe-area dependency.
+
+Avoid applying safe-area padding twice if the current navigation layer already handles part of it.
+
+---
+
+# 4. Home Header — Visual Hierarchy
+
+Improve the top area of Home.
+
+Desired hierarchy:
+
+```text
+safe area
+
+      Show Explorer
+         centered
+
+search field
+
+status filters
+
+rating filters
+
+show results
+```
+
+The title must:
+
+- be horizontally centered;
+- have clear visual hierarchy;
+- feel intentional rather than being positioned close to the status bar;
+- use the existing semantic typography/design tokens.
+
+Do not add a subtitle unless one already has a clear purpose.
+
+Keep the header compact and clean.
+
+---
+
+# 5. Home Search and Filters
+
+Search should appear immediately below the title.
+
+Filters should appear below Search with clear spacing and grouping.
+
+Suggested hierarchy:
+
+```text
+Show Explorer
+
+[ Search shows... ]
+
+Status
+[ All ] [ Running ] [ Ended ] [ To Be Determined ]
+
+Rating
+[ Any ] [ 6+ ] [ 7+ ] [ 8+ ] [ 9+ ]
+```
+
+Maintain existing filtering behavior.
+
+This task changes presentation, not filtering semantics.
+
+---
+
+# 6. Do Not Use "TBD" or "TDB"
+
+Do not display:
+
+```text
+TBD
+```
+
+or:
+
+```text
+TDB
+```
+
+as the user-facing status-filter label.
+
+Use:
+
+```text
+To Be Determined
+```
+
+in full.
+
+The internal domain value may remain:
+
+```ts
+'to-be-determined';
+```
+
+Do not change the internal domain simply to change the UI label.
+
+Also review `ShowStatusBadge` and other user-facing status presentation for consistency.
+
+If this status appears elsewhere as an unclear abbreviation, use the full readable label there as well.
+
+---
+
+# 7. Filter Layout
+
+Because `To Be Determined` is longer, ensure filter Chips remain usable on smaller screens.
+
+Use an appropriate mobile layout such as:
+
+- horizontal scrolling;
+- wrapping;
+
+depending on the existing implementation.
+
+Avoid compressed text or clipped Chips.
+
+Do not shrink typography excessively just to fit one line.
+
+---
+
+# 8. Icon System
+
+Standardize application icons using Expo Vector Icons.
+
+Use the icon library already available through the Expo ecosystem rather than text symbols or inconsistent icon implementations.
+
+Inspect the currently installed packages first.
+
+Do not install another icon library if Expo Vector Icons is already available.
+
+---
+
+# 9. Favorite Icon
+
+Replace the existing heart icon with a cleaner, modern heart from Expo Vector Icons.
+
+Use consistent states:
+
+```text
+not favorite
+→ outlined heart
+
+favorite
+→ filled heart
+```
+
+Choose icons from the same icon family.
+
+For example, an appropriate Expo Vector Icons family may expose equivalent outlined/filled heart icons.
+
+Do not use:
+
+- Unicode hearts;
+- emoji hearts;
+- different icon families for selected/unselected state.
+
+---
+
+# 10. Tab Icons
+
+Review Home and Favorites tab icons as part of the same icon standardization.
+
+Use one consistent Expo Vector Icons family where practical.
+
+Expected semantic direction:
+
+```text
+Home
+→ home outline / filled variant
+
+Favorites
+→ heart outline / filled variant
+```
+
+Selected and unselected states should feel like part of the same visual system.
+
+Preserve existing Favorites count/badge behavior.
+
+---
+
+# 11. Icon Sizing
+
+Create visual consistency between:
+
+- tab icons;
+- FavoriteButton;
+- navigation actions;
+- any other primary application icons.
+
+Do not make every icon exactly the same size if context differs, but use a coherent scale.
+
+Icons should have:
+
+- adequate touch target;
+- consistent stroke/visual weight;
+- semantic accessibility labels.
+
+The visual icon itself may be smaller than its Pressable touch area.
+
+---
+
+# 12. FavoriteButton Accessibility
+
+Preserve or improve the existing accessible behavior.
+
+The control must continue to communicate:
+
+```text
+Add {show name} to favorites
+```
+
+or:
+
+```text
+Remove {show name} from favorites
+```
+
+Do not rely only on outline/fill or color to communicate state.
+
+---
+
+# 13. Favorites Screen Header
+
+Remove the redundant Favorites content header currently displaying:
+
+```text
+Favorites
+```
+
+and its descriptive paragraph.
+
+The Favorites tab/navigation already communicates the current destination.
+
+Do not duplicate that information inside the content area.
+
+The screen should begin more directly with:
+
+```text
+Search
+Filters
+Favorites list
+```
+
+or the appropriate empty/hydration state.
+
+---
+
+# 14. Favorites Layout
+
+After removing the title/description:
+
+- adjust top spacing intentionally;
+- ensure content does not look vertically detached;
+- preserve safe-area behavior;
+- keep Search and filters visually aligned with Home.
+
+Home and Favorites should feel like related discovery experiences.
+
+They do not need to be pixel-identical, but Search/Filter components should preserve consistent styling and spacing.
+
+---
+
+# 15. Show Detail — Reduce Vertical Footprint
+
+The current Show Detail top area occupies too much vertical space.
+
+Reduce the vertical footprint of the upper Show Detail section.
+
+Focus particularly on:
+
+- poster/image height;
+- excessive vertical padding;
+- gaps between title, metadata and summary;
+- oversized hero/header presentation.
+
+Do not change the physical screen height.
+
+Instead, make the Detail content feel more compact and allow meaningful information to appear earlier.
+
+---
+
+# 16. Show Detail Image
+
+Reduce the current poster/detail-image height moderately.
+
+Do not make it tiny.
+
+Preserve:
+
+- aspect ratio;
+- visual prominence;
+- image quality;
+- stable layout.
+
+The goal is:
+
+```text
+less dominant hero
++
+more content visible above the fold
+```
+
+not:
+
+```text
+thumbnail-sized poster
+```
+
+Use existing semantic spacing/tokens where possible.
+
+---
+
+# 17. Show Detail Spacing
+
+Review vertical spacing around:
+
+```text
+poster
+show title
+status/rating
+genres
+favorite action
+premiere
+summary
+episodes heading
+```
+
+Reduce unnecessary large gaps.
+
+Maintain clear grouping and readability.
+
+Do not flatten all spacing into one dense block.
+
+---
+
+# 18. Season Accordion Animation
+
+Improve the season expand/collapse interaction.
+
+Currently opening and closing should feel smoother.
+
+Add a subtle animation for:
+
+```text
+collapsed → expanded
+expanded → collapsed
+```
+
+The animation should feel:
+
+- smooth;
+- quick;
+- restrained;
+- native/mobile appropriate.
+
+Avoid long or decorative animation.
+
+---
+
+# 19. Animation Technology
+
+First inspect existing dependencies.
+
+Prefer using technology already present in the project.
+
+Since the project already uses the Expo/NativeWind stack, check whether `react-native-reanimated` is already installed and configured.
+
+If it is already available, it may be used for a small layout/accordion transition.
+
+Alternatively, a standard React Native layout animation is acceptable if it provides a clean cross-platform result in the current app.
+
+Do not install a new animation dependency solely for the accordion.
+
+---
+
+# 20. Accordion Animation Scope
+
+Animate the layout/content reveal, not only the icon.
+
+The user should perceive the season content smoothly opening and closing.
+
+A small chevron rotation may also be used if an existing icon is present, but it is secondary.
+
+Do not create elaborate:
+
+- spring sequences;
+- bouncing;
+- fading everything;
+- long transitions.
+
+Target a subtle duration approximately in the range of normal mobile micro-interactions.
+
+---
+
+# 21. Accordion State
+
+Do not change existing state semantics.
+
+Preserve:
+
+```text
+first available season
+→ initially expanded
+
+remaining seasons
+→ initially collapsed
+```
+
+Animation is presentation only.
+
+Do not persist accordion state.
+
+Do not move it to Context/TanStack Query.
+
+---
+
+# 22. Accordion Accessibility
+
+Animation must not break current accessibility behavior.
+
+Continue exposing expanded state.
+
+Equivalent semantic intent:
+
+```text
+Season 2, 13 episodes, expanded
+```
+
+or:
+
+```text
+Season 2, 13 episodes, collapsed
+```
+
+The content should not remain accessibility-focusable when logically collapsed.
+
+---
+
+# 23. Motion Quality
+
+Avoid animation that causes:
+
+- visible flashing;
+- major layout jumps;
+- delayed interaction;
+- content being clipped incorrectly;
+- repeated animation on unrelated renders.
+
+Animate only when expansion state changes.
+
+---
+
+# 24. UX Consistency
+
+Review Home, Favorites and Detail after these changes for:
+
+- consistent spacing;
+- icon visual weight;
+- typography hierarchy;
+- safe-area treatment;
+- consistent Chips;
+- consistent SearchInput;
+- consistent surface/background usage.
+
+Do not redesign the design system.
+
+Make local refinements using existing semantic tokens.
+
+---
+
+# 25. Preserve Existing Behavior
+
+The following must remain unchanged:
+
+```text
+remote search
+search debounce
+browse pagination
+status filtering semantics
+rating filtering semantics
+Favorites persistence
+Favorites local search
+Favorites local filters
+favorite count
+Show Detail fetching
+Episodes grouping
+navigation routes
+```
+
+This task is presentation/interaction refinement only.
+
+---
+
+# 26. No Architecture Changes
+
+Do not introduce:
+
+- Zustand;
+- Redux;
+- new Contexts;
+- new storage strategy;
+- new query keys;
+- new domain layers;
+- new API clients;
+- new route hierarchy.
+
+Do not modify canonical architecture to justify a visual change.
+
+---
+
+# 27. No New Dependencies
+
+Do not install new packages unless absolutely necessary.
+
+Expo Vector Icons should be used through the existing Expo ecosystem.
+
+For accordion animation, reuse existing animation capabilities.
+
+If a required package genuinely does not exist, report that before adding it rather than silently changing dependencies.
+
+---
+
+# 28. Tests
+
+Update tests only where behavior meaningfully changes.
+
+High-value tests include:
+
+## Filters
+
+Verify user-facing status label:
+
+```text
+To Be Determined
+```
+
+and ensure:
+
+```text
+TBD
+TDB
+```
+
+are not used in the relevant UI.
+
+## FavoriteButton
+
+Verify modern icon integration does not change accessible favorite semantics.
+
+Do not test internal icon SVG/path implementation.
+
+## Favorites screen
+
+Verify the redundant:
+
+```text
+Favorites
+```
+
+content heading/description is no longer rendered if existing tests asserted it.
+
+Preserve empty-state copy separately.
+
+## SeasonAccordion
+
+Verify:
+
+- expansion still works;
+- collapse still works;
+- accessibility expanded state remains correct.
+
+Do not write timing-sensitive animation tests unless required.
+
+---
+
+# 29. Manual Validation Checklist
+
+After implementation, manually inspect:
+
+## Home
+
+- no overlap with status/notification bar;
+- title centered;
+- title spacing looks balanced;
+- Search directly below title;
+- filters well grouped;
+- `To Be Determined` fully readable;
+- Chips work on narrow layout.
+
+## Icons
+
+- Home tab icon modern/consistent;
+- Favorites tab icon modern/consistent;
+- FavoriteButton outlined/filled state looks coherent;
+- icon touch targets remain comfortable.
+
+## Favorites
+
+- no redundant Favorites content title;
+- no redundant description;
+- Search/filter content begins naturally;
+- empty Favorites state still makes sense.
+
+## Detail
+
+- top area visibly more compact;
+- poster still feels important;
+- more useful content appears earlier;
+- no cramped typography.
+
+## Seasons
+
+- expand feels smooth;
+- collapse feels smooth;
+- no layout flashes;
+- accessibility state still updates.
+
+---
+
+# 30. Quality Gates
+
+Before completion, run:
+
+```bash
+npm run format:check
+npm run lint
+npm run typecheck
+npm run test:ci
+```
+
+If formatting fails:
+
+```bash
+npm run format
+```
+
+Then rerun all quality gates.
+
+Do not report completion while a gate fails.
+
+---
+
+# 31. Completion Report
+
+When complete, report:
+
+## Changed
+
+Group changes into:
+
+```text
+Home
+Filters
+Icons
+Favorites
+Show Detail
+Season Accordion
+```
+
+## Files
+
+List the important files modified.
+
+## Tests
+
+List relevant tests updated/added.
+
+## Validation
+
+```text
+format:check — PASS/FAIL
+lint         — PASS/FAIL
+typecheck    — PASS/FAIL
+test:ci      — PASS/FAIL
+```
+
+## UX Notes
+
+Mention:
+
+- safe-area/header approach;
+- icon family selected;
+- accordion animation approach;
+- how Show Detail height/vertical footprint was reduced.
+
+Do not include unrelated retrospective.
+
+---
+
+# 32. Definition of Done
+
+This UX refinement is complete when:
+
+- Home no longer overlaps the status/notification area;
+- Home title is centered and visually organized;
+- Search appears clearly below the title;
+- filters appear clearly below Search;
+- `TBD`/`TDB` is not used as user-facing status copy;
+- `To Be Determined` is displayed clearly;
+- primary icons use a consistent modern Expo Vector Icons family;
+- FavoriteButton uses coherent outline/filled heart states;
+- Favorites content no longer repeats a redundant title/description;
+- Favorites Search/filters remain visually organized;
+- Show Detail upper section has a smaller vertical footprint;
+- Show Detail remains readable and visually balanced;
+- season expansion/collapse feels smooth;
+- animation does not change accordion state ownership;
+- accessibility behavior remains intact;
+- business behavior remains unchanged;
+- no unnecessary dependency or architecture change is introduced;
+- all quality gates pass.

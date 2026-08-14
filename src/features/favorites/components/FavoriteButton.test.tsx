@@ -43,12 +43,24 @@ describe('FavoriteButton', () => {
     await waitFor(() =>
       expect(screen.getByLabelText('Add Breaking Bad to favorites')).toBeTruthy(),
     );
+    expect(screen.getByLabelText('Add Breaking Bad to favorites').props.accessibilityState).toEqual(
+      {
+        disabled: false,
+        selected: false,
+      },
+    );
 
     await act(async () => {
       fireEvent.press(screen.getByLabelText('Add Breaking Bad to favorites'));
     });
 
     expect(screen.getByLabelText('Remove Breaking Bad from favorites')).toBeTruthy();
+    expect(
+      screen.getByLabelText('Remove Breaking Bad from favorites').props.accessibilityState,
+    ).toEqual({
+      disabled: false,
+      selected: true,
+    });
   });
 
   it('renders a selected state from hydrated favorites and toggles removal', async () => {

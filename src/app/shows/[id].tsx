@@ -14,6 +14,7 @@ import { ShowDetailSkeleton } from '@/features/shows/components/ShowDetailSkelet
 import { useEpisodes } from '@/features/shows/queries/useEpisodes';
 import { useShow } from '@/features/shows/queries/useShow';
 import { groupEpisodesBySeason } from '@/features/shows/utils/groupEpisodesBySeason';
+import { useOptionalSafeAreaInsets } from '@/hooks/useOptionalSafeAreaInsets';
 
 export function normalizeShowIdParam(id: string | string[] | undefined): number | null {
   if (Array.isArray(id)) {
@@ -54,6 +55,7 @@ type ValidShowDetailScreenProps = {
 };
 
 function ValidShowDetailScreen({ showId }: ValidShowDetailScreenProps) {
+  const insets = useOptionalSafeAreaInsets();
   const showQuery = useShow(showId);
   const episodesQuery = useEpisodes(showId);
   const show = showQuery.data;
@@ -66,7 +68,13 @@ function ValidShowDetailScreen({ showId }: ValidShowDetailScreenProps) {
     return (
       <Screen>
         <Stack.Screen options={{ title: 'Show Details' }} />
-        <ScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingVertical: 24 }}>
+        <ScrollView
+          contentContainerStyle={{
+            paddingBottom: 24 + insets.bottom,
+            paddingHorizontal: 16,
+            paddingTop: 24,
+          }}
+        >
           <ShowDetailSkeleton />
         </ScrollView>
       </Screen>
@@ -102,7 +110,13 @@ function ValidShowDetailScreen({ showId }: ValidShowDetailScreenProps) {
   return (
     <Screen>
       <Stack.Screen options={{ title: show.name }} />
-      <ScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingVertical: 24 }}>
+      <ScrollView
+        contentContainerStyle={{
+          paddingBottom: 24 + insets.bottom,
+          paddingHorizontal: 16,
+          paddingTop: 24,
+        }}
+      >
         <View className="gap-xl">
           <ShowDetail show={show} action={<FavoriteButton show={show} />} />
           <EpisodesSection

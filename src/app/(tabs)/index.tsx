@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { router } from 'expo-router';
 import { View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
@@ -17,10 +18,15 @@ import { useSearchShows } from '@/features/shows/queries/useSearchShows';
 import { useShows } from '@/features/shows/queries/useShows';
 import { filterShows } from '@/features/shows/utils/filterShows';
 import { useDebouncedValue } from '@/hooks/useDebouncedValue';
+import { useOptionalSafeAreaInsets } from '@/hooks/useOptionalSafeAreaInsets';
 
 const SEARCH_DEBOUNCE_MS = 350;
+const LIST_HORIZONTAL_PADDING = 16;
+const LIST_TOP_PADDING = 16;
+const LIST_BOTTOM_PADDING = 32;
 
 export default function HomeScreen() {
+  const insets = useOptionalSafeAreaInsets();
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState<StatusFilter>('all');
   const [minimumRating, setMinimumRating] = useState<MinimumRating>(null);
@@ -48,7 +54,7 @@ export default function HomeScreen() {
 
   const isInitialBrowseLoading =
     mode === 'browse' && browseQuery.isPending && browsedShows.length === 0;
-  const isSearchLoading = mode === 'search' && searchQuery.isPending;
+  const isSearchLoading = mode === 'search' && searchQuery.isPending && availableShows.length === 0;
   const isInitialBrowseError =
     mode === 'browse' && browseQuery.isError && browsedShows.length === 0;
   const isSearchError = mode === 'search' && searchQuery.isError;
@@ -75,21 +81,24 @@ export default function HomeScreen() {
 
   return (
     <Screen>
-      <View className="border-b border-border bg-background px-md pb-md pt-lg">
-        <View className="mb-md gap-xs">
-          <Text variant="heading">Shows</Text>
-          <Text variant="muted">Browse, search, and refine TV shows.</Text>
-        </View>
+      <SafeAreaView edges={['top']} className="border-b border-border bg-background">
+        <View className="px-md pb-md pt-sm">
+          <View className="mb-md items-center">
+            <Text variant="heading" className="text-center">
+              Show Explorer
+            </Text>
+          </View>
 
-        <ShowFilters
-          minimumRating={minimumRating}
-          onMinimumRatingChange={setMinimumRating}
-          onSearchChange={setSearch}
-          onStatusChange={setStatus}
-          search={search}
-          status={status}
-        />
-      </View>
+          <ShowFilters
+            minimumRating={minimumRating}
+            onMinimumRatingChange={setMinimumRating}
+            onSearchChange={setSearch}
+            onStatusChange={setStatus}
+            search={search}
+            status={status}
+          />
+        </View>
+      </SafeAreaView>
 
       {isInitialBrowseLoading || isSearchLoading ? (
         <View className="flex-1 px-md py-md">
@@ -128,7 +137,11 @@ export default function HomeScreen() {
               }}
             />
           }
-          contentContainerStyle={{ padding: 16, paddingBottom: 32 }}
+          contentContainerStyle={{
+            paddingBottom: LIST_BOTTOM_PADDING + insets.bottom,
+            paddingHorizontal: LIST_HORIZONTAL_PADDING,
+            paddingTop: LIST_TOP_PADDING,
+          }}
           onEndReached={handleEndReached}
           onEndReachedThreshold={0.4}
           onShowPress={handleShowPress}

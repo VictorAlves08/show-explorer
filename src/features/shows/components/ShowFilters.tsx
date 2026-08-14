@@ -24,7 +24,7 @@ const statusOptions: readonly {
   { label: 'Running', value: 'running', accessibilityLabel: 'Status Running' },
   { label: 'Ended', value: 'ended', accessibilityLabel: 'Status Ended' },
   {
-    label: 'TBD',
+    label: 'To Be Determined',
     value: 'to-be-determined',
     accessibilityLabel: 'Status To Be Determined',
   },
@@ -68,6 +68,7 @@ export function ShowFilters({
           {statusOptions.map((option) => (
             <Chip
               accessibilityLabel={option.accessibilityLabel}
+              className={option.value === 'to-be-determined' ? 'px-sm' : undefined}
               key={option.value}
               onPress={() => onStatusChange(option.value)}
               selected={status === option.value}

@@ -7,6 +7,8 @@ import type { ShowListItem } from '@/features/shows/domain/show';
 
 import { ShowCard } from './ShowCard';
 
+const DRAW_DISTANCE = 900;
+
 type ShowListProps = Omit<
   FlashListProps<ShowListItem>,
   'data' | 'renderItem' | 'keyExtractor' | 'ItemSeparatorComponent'
@@ -35,8 +37,10 @@ export function ShowList({
     <FlashList
       contentContainerStyle={contentContainerStyle}
       data={shows}
+      drawDistance={DRAW_DISTANCE}
       ItemSeparatorComponent={ShowListSeparator}
       keyExtractor={(item) => String(item.id)}
+      maintainVisibleContentPosition={{ disabled: true }}
       renderItem={renderItem}
       {...props}
     />

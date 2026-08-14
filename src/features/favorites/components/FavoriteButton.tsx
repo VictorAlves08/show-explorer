@@ -1,5 +1,6 @@
+import { Ionicons } from '@expo/vector-icons';
+
 import { IconButton } from '@/components/ui/IconButton';
-import { Text } from '@/components/ui/Text';
 import type { ShowListItem } from '@/features/shows/domain/show';
 
 import { toFavoriteShow } from '../domain/favorite';
@@ -29,14 +30,13 @@ export function FavoriteButton({ show }: FavoriteButtonProps) {
       onPress={handlePress}
       size="sm"
     >
-      <Text
+      <Ionicons
         accessibilityElementsHidden
-        className={selected ? 'text-favorite' : 'text-foreground-muted'}
+        color={selected ? '#db2777' : '#64748b'}
         importantForAccessibility="no-hide-descendants"
-        variant="title"
-      >
-        {selected ? '♥' : '♡'}
-      </Text>
+        name={selected ? 'heart' : 'heart-outline'}
+        size={22}
+      />
     </IconButton>
   );
 }

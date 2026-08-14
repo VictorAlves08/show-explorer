@@ -6,6 +6,7 @@ export function ShowCardSkeleton() {
   return (
     <View
       accessibilityLabel="Loading show"
+      accessibilityRole="none"
       className="flex-row gap-md rounded-md border border-border bg-surface p-sm"
     >
       <Skeleton className="aspect-[2/3] w-24 rounded-sm" />

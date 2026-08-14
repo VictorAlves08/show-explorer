@@ -4,8 +4,8 @@ import { Skeleton } from '@/components/ui/Skeleton';
 
 export function ShowDetailSkeleton() {
   return (
-    <View accessibilityLabel="Loading show detail" className="gap-lg">
-      <Skeleton className="aspect-[2/3] w-full rounded-md" />
+    <View accessibilityLabel="Loading show detail" className="gap-md">
+      <Skeleton className="aspect-[2/3] w-44 self-center rounded-md" />
       <View className="gap-sm">
         <Skeleton className="h-8 w-3/4" />
         <Skeleton className="h-5 w-1/2" />

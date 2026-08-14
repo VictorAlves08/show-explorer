@@ -19,13 +19,14 @@ export function IconButton({
   className,
   disabled,
   accessibilityRole = 'button',
+  accessibilityState,
   style,
   ...props
 }: IconButtonProps) {
   return (
     <Pressable
       accessibilityRole={accessibilityRole}
-      accessibilityState={{ disabled: Boolean(disabled) }}
+      accessibilityState={{ ...accessibilityState, disabled: Boolean(disabled) }}
       className={cn(
         'items-center justify-center rounded-md border border-border bg-surface',
         sizeClassNames[size],

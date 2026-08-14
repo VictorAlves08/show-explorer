@@ -166,6 +166,10 @@ describe('HomeScreen', () => {
   it('renders browse results', async () => {
     await render(<HomeScreen />);
 
+    expect(screen.getByText('Show Explorer')).toBeTruthy();
+    expect(screen.getByText('To Be Determined')).toBeTruthy();
+    expect(screen.queryByText('TBD')).toBeNull();
+    expect(screen.queryByText('TDB')).toBeNull();
     expect(screen.getByText('Running Show')).toBeTruthy();
     expect(screen.getByText('Ended Show')).toBeTruthy();
   });

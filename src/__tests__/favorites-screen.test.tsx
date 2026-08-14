@@ -128,6 +128,8 @@ describe('FavoritesScreen', () => {
     await render(<FavoritesScreen />);
 
     expect(screen.getByText('No favorites yet')).toBeTruthy();
+    expect(screen.getByText('To Be Determined')).toBeTruthy();
+    expect(screen.queryByText('Your saved shows, searchable offline.')).toBeNull();
   });
 
   it('renders favorites after hydration and navigates to normal show detail', async () => {

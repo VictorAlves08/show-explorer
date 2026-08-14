@@ -23,7 +23,7 @@ const endedRated: ShowListItem = {
 
 const toBeDeterminedRated: ShowListItem = {
   id: 3,
-  name: 'TBD Rated',
+  name: 'Future Rated',
   imageUrl: null,
   status: 'to-be-determined',
   rating: 9,

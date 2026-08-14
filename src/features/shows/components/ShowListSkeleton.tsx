@@ -8,7 +8,7 @@ type ShowListSkeletonProps = {
 
 export function ShowListSkeleton({ count = 6 }: ShowListSkeletonProps) {
   return (
-    <View accessibilityLabel="Loading shows" className="gap-md">
+    <View accessibilityLabel="Loading shows" accessibilityRole="progressbar" className="gap-md">
       {Array.from({ length: count }, (_, index) => (
         <ShowCardSkeleton key={index} />
       ))}

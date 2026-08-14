@@ -19,9 +19,9 @@ export function ShowDetail({ show, action }: ShowDetailProps) {
   const summary = sanitizeShowSummary(show.summary);
 
   return (
-    <View className="gap-lg">
-      <View className="overflow-hidden rounded-md bg-surface-muted">
-        <View className="aspect-[2/3] w-full">
+    <View className="gap-md">
+      <View className="self-center overflow-hidden rounded-md bg-surface-muted">
+        <View className="aspect-[2/3] w-44">
           {show.imageUrl ? (
             <Image
               accessibilityIgnoresInvertColors
@@ -42,9 +42,9 @@ export function ShowDetail({ show, action }: ShowDetailProps) {
         </View>
       </View>
 
-      <View className="gap-md">
+      <View className="gap-sm">
         <View className="flex-row items-start gap-md">
-          <View className="min-w-0 flex-1 gap-sm">
+          <View className="min-w-0 flex-1 gap-xs">
             <Text variant="heading">{show.name}</Text>
             <View className="flex-row flex-wrap items-center gap-sm">
               <ShowStatusBadge status={show.status} />
@@ -54,15 +54,17 @@ export function ShowDetail({ show, action }: ShowDetailProps) {
           {action ? <View>{action}</View> : null}
         </View>
 
-        {show.genres.length > 0 ? <Text variant="muted">{show.genres.join(' / ')}</Text> : null}
+        <View className="gap-xs">
+          {show.genres.length > 0 ? <Text variant="muted">{show.genres.join(' / ')}</Text> : null}
 
-        {show.premieredAt ? <Text variant="muted">{`Premiered ${show.premieredAt}`}</Text> : null}
+          {show.premieredAt ? <Text variant="muted">{`Premiered ${show.premieredAt}`}</Text> : null}
+        </View>
       </View>
 
       {summary ? (
         <>
           <Divider />
-          <View className="gap-sm">
+          <View className="gap-xs">
             <Text variant="title">Summary</Text>
             <Text>{summary}</Text>
           </View>
