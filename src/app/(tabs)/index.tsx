@@ -6,6 +6,7 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { Screen } from '@/components/ui/Screen';
 import { Text } from '@/components/ui/Text';
+import { FavoriteButton } from '@/features/favorites/components/FavoriteButton';
 import { ShowFilters } from '@/features/shows/components/ShowFilters';
 import { ShowCardSkeleton } from '@/features/shows/components/ShowCardSkeleton';
 import { ShowList } from '@/features/shows/components/ShowList';
@@ -131,6 +132,7 @@ export default function HomeScreen() {
           onEndReached={handleEndReached}
           onEndReachedThreshold={0.4}
           onShowPress={handleShowPress}
+          renderShowAction={(show) => <FavoriteButton show={show} />}
         />
       )}
     </Screen>

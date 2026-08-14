@@ -7,7 +7,7 @@ import type { ShowListItem } from '@/features/shows/domain/show';
 import { useSearchShows } from '@/features/shows/queries/useSearchShows';
 import { useShows } from '@/features/shows/queries/useShows';
 
-import HomeScreen from '../app/index';
+import HomeScreen from '../app/(tabs)/index';
 
 const mockFetchNextPage = jest.fn();
 const mockBrowseRefetch = jest.fn();
@@ -29,6 +29,10 @@ jest.mock('@/features/shows/queries/useSearchShows', () => ({
 
 jest.mock('@/hooks/useDebouncedValue', () => ({
   useDebouncedValue: <TValue,>(value: TValue) => value,
+}));
+
+jest.mock('@/features/favorites/components/FavoriteButton', () => ({
+  FavoriteButton: () => null,
 }));
 
 jest.mock('@/features/shows/components/ShowList', () => {

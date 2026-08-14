@@ -1,5 +1,6 @@
 import { FlashList } from '@shopify/flash-list';
 import type { FlashListProps, ListRenderItem } from '@shopify/flash-list';
+import type { ReactNode } from 'react';
 import { View } from 'react-native';
 
 import type { ShowListItem } from '@/features/shows/domain/show';
@@ -12,11 +13,22 @@ type ShowListProps = Omit<
 > & {
   shows: readonly ShowListItem[];
   onShowPress?: (show: ShowListItem) => void;
+  renderShowAction?: (show: ShowListItem) => ReactNode;
 };
 
-export function ShowList({ shows, onShowPress, contentContainerStyle, ...props }: ShowListProps) {
+export function ShowList({
+  shows,
+  onShowPress,
+  renderShowAction,
+  contentContainerStyle,
+  ...props
+}: ShowListProps) {
   const renderItem: ListRenderItem<ShowListItem> = ({ item }) => (
-    <ShowCard show={item} onPress={onShowPress ? () => onShowPress(item) : undefined} />
+    <ShowCard
+      action={renderShowAction?.(item)}
+      show={item}
+      onPress={onShowPress ? () => onShowPress(item) : undefined}
+    />
   );
 
   return (
